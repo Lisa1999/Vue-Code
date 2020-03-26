@@ -26,6 +26,11 @@
             <input type="text" class="form control" v-model="name" />
           </label>
 
+          <label>
+            搜索关键字:
+            <input type="text" class="form control" v-model="keywords" />
+          </label>
+
           <input
             type="button"
             value="添加"
@@ -45,12 +50,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-for="item in search(keywords)" :key="item.id">
             <td>{{ item.id }}</td>
             <td v-text="item.name"></td>
             <td>{{ item.ctime }}</td>
             <td>
-              <a href="">删除</a>
+              <a href="" @click.prevent="del(item.id)">删除</a>
             </td>
           </tr>
         </tbody>
@@ -62,6 +67,7 @@
         data: {
           id: "",
           name: "",
+          keywords: "",
           list: [
             { id: 1, name: "奔驰", ctime: new Date() },
             { id: 2, name: "本田", ctime: new Date() },
@@ -73,6 +79,41 @@
             var car = { id: this.id, name: this.name, ctime: new Date() };
             this.list.push(car);
             this.id = this.name = "";
+          },
+
+          del(id) {
+            // this.list.some((item, i) => {
+            //   if (item.id == id) {
+            //     this.list.splice(i, 1);
+            //     //终止循环
+            //     return true;
+            //   }
+            // });
+
+            var index = this.list.findIndex(item => {
+              if (item.id == id) {
+                return true;
+              }
+            });
+
+            this.list.splice(index, 1);
+          },
+
+          search(keywords) {
+            // var newList = [];
+            // this.list.forEach(item => {
+            //   if (item.name.indexOf(keywords) != -1) {
+            //     newList.push(item);
+            //   }
+            // });
+            // return newList;
+
+            return this.list.filter(item => {
+              // if(item.name).indexOf(keywords) != -1
+              if (item.name.includes(keywords)) {
+                return item;
+              }
+            });
           }
         }
       });

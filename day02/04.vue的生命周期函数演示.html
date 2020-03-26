@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../lib/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <input type="button" value="修改" @click="msg='No'" />
+      <h3 id="h3">{{msg}}</h3>
+    </div>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          msg: "ok"
+        },
+        methods: {
+          show() {
+            console.log("执行了show方法")
+          }
+        },
+        beforeCreate() {
+          //实例被完全创建出来之前会执行
+          // console.log(this.msg)
+          // this.show()
+          //beforeCreate执行时，data和methods都未被初始化
+        },
+
+        created() {
+          //2生命周期函数
+          // console.log(this.msg)
+          // this.show()
+          //created执行时，data和methods都已经被初始化
+          //调用methods中的方法或这调用data中的数据最早在此操作
+        },
+        beforeMount() {
+          //3生命周期函数
+          //模版已经编译，但尚未渲染到页面中
+          // console.log(document.getElementById("h3").innerText)
+          //beforeMount执行时，页面元素没有真正替换，只是模版字符串
+        },
+        mounted() {
+          //4生命周期函数
+          //内存中的模版已经真实挂载到页面中
+          console.log(document.getElementById("h3").innerText)
+          //最后一个生命周期函数，实例已经创建好了，
+        },
+
+        //运行中的两个事件
+
+        beforeUpdate() {
+          //界面没被更新，数据更新了
+          // console.log("界面" + document.getElementById("h3").innerText)
+          // console.log("数据" + this.msg)
+          //执行到beforeUpdate 页面尚未与最新数据同步
+        },
+        updated() {
+          //执行updated 页面与数据同步更新
+          console.log("界面" + document.getElementById("h3").innerText)
+          console.log("数据" + this.msg)
+        }
+
+        //beforeDestroy钩子函数
+        //实例从运行到销毁阶段
+        //实例身上所有data  methods filters directives都可用
+
+        //Destroyed完全销毁
+      })
+    </script>
+  </body>
+</html>
