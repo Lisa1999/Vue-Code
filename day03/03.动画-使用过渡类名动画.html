@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/vue.js"></script>
+  <style>
+    /* v-enter
+       v-leave-to 这是一个时间点，元素的起始和终止状态  */
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(180px);
+    }
+
+    /* 
+    v-enter-active入场
+    v-leave-active出场
+     */
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 4s ease;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="toggle" @click="flag = !flag">
+    <transition>
+      <!-- 使用transition ，将需要被动画控制的元素包裹起来 -->
+      <h3 v-if="flag">这是一个动画</h3>
+    </transition>
+  </div>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false
+      },
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

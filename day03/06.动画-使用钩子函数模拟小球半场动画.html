@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/vue.js"></script>
+  <style>
+    .ball {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: hotpink;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="快到碗里来" @click="flag = !flag">
+    <!-- 把小球包裹起来 -->
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>
+
+  </div>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false
+      },
+      methods: {
+        // 钩子函数第一个参数el
+        // 表示要执行动画的元素,是原声的jsDom对象
+        //document.getElementById获取的对象
+        beforeEnter(el) {
+          //动画入场前，在其中设置元素开始样式
+          // 设置起始位置
+          el.style.transform = "translate(0,0)"
+        },
+        enter(el, done) {
+          //不写没有动画
+          //el.offsetWidth有动画刷新
+          el.offsetWidth
+          //动画开始后的样式，设置完成动画之后的结束状态
+          el.style.transform = "translate(150px,450px)"
+          el.style.transition = 'all 1s ease'
+
+          //动画完成后立即消失
+          //done 是 afteEnter函数的的引用
+          done()
+        },
+        afterEnter(el) {
+          //动画完成之后
+          console.log('OK');
+          this.flag = !this.flag
+
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

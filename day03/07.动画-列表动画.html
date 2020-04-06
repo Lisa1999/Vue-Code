@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/vue.js"></script>
+  <style>
+    li {
+      border: 1px dashed #999;
+      margin: 5px;
+      line-height: 25px;
+      padding-left: 5px;
+      font-size: 12px;
+      width: 100%;
+    }
+
+    li:hover {
+      background-color: hotpink;
+      transition: all 0.8s ease;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.6s ease
+    }
+
+    /* .v-move和.v-leave-active实现列表后续元素渐渐飘上来 */
+
+    .v-move {
+      transition: all 0.6s ease;
+    }
+
+    .v-leave-active {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <label>
+        Id:
+        <input type="text" v-model="id">
+
+      </label>
+
+      <label>
+        Name:
+        <input type="text" v-model="name">
+      </label>
+
+      <input type="button" value="添加" @click="add()">
+
+    </div>
+    <!-- 过渡元素是v-for循环渲染用 transition-group 且有：key属性-->
+    <!-- <ul> -->
+    <!-- transition-group添加appear属性 添加入场效果，页面刚展示 -->
+    <!-- 默认变为span -->
+    <!-- 通过为transition设置tag属性  指定渲染成什么元素-->
+    <transition-group appear tag="ul">
+      <li v-for="(item,i) in list " :key="item.id" @click="del(i)">
+        {{item.id}}--{{item.name}}
+      </li>
+    </transition-group>
+    <!-- </ul> -->
+  </div>
+
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        id: '',
+        name: '',
+        list: [
+          { id: 1, name: '赵高' },
+          { id: 2, name: '严嵩' },
+          { id: 3, name: '秦桧' }]
+      },
+      methods: {
+        add() {
+          this.list.push({ id: this.id, name: this.name })
+          this.id = this.name = ''
+        },
+        del(i) {
+          this.list.splice(i, 1)
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
