@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <mycom1></mycom1>
+  </div>
+
+  <script>
+    Vue.component('mycom1', {
+      template: '<h1>全局组件--{{msg}}</h1>',
+      //1.组件可有data
+      //2.组件的data与实例data不同，实例data可以为一个对象
+      //3.组件中的data必须为一个方法，方法必须返回对象
+      data: function () {
+        return {
+          msg: '组件data中的数据'
+        }
+      }
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

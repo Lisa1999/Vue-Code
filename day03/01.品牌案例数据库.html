@@ -75,12 +75,9 @@
           this.$http.get("http://127.0.0.1:5500/day03/pinpai.txt").then(result => {
             console.log(result);
             if (result.status == 200) {
-              alert("成功！")
-              console.log(result.bodyText);
-              console.log(JSON.parse(result.bodyText));
+              // this.list = JSON.parse(result.bodyText.message || '[]')
+              // this.list = JSON.parse('{"id":4,"name":"gg","ctime":"1232332"}')
 
-              // JSON.parse(result.bodyText)
-              this.list = body.message
             } else {
               alert("失败！")
             }

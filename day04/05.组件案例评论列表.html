@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../lib/vue.js"></script>
+  <link rel="stylesheet" href="../lib/bootstrap.min.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- 把父组件的方法传递给子组件调用 -->
+    <cb @func="loadComments"></cb>
+
+    <ul class="list-group">
+      <li class="list-group-item" v-for="item in list" :key="item.id">
+        <span class="badge">评论人{{item.user}}</span>
+        {{item.content}}
+
+      </li>
+    </ul>
+
+
+  </div>
+
+  <template id="tmpl">
+    <div>
+
+      <div class="form-group">
+        <label>评论人：</label>
+        <input type="text" class="form-control" v-model="user">
+      </div>
+
+      <div class="form-group">
+        <label>评论内容：</label>
+        <textarea class="form-control" v-model="content"></textarea>
+      </div>
+
+      <div class="form-group">
+        <input type="button" value="发表评论" class="btn btn-primary" @click="postComment">
+      </div>
+
+    </div>
+
+  </template>
+  <script>
+    var commentBox = {
+      template: '#tmpl',
+      data() {
+        return {
+          user: '',
+          content: ''
+        }
+      },
+      methods: {
+        postComment() {//发表评论的方法
+          // 1. 拿到评论的数据组织出一个最新的评论对象
+          // 2. 先获取到之前的评论数据(string)转换成数组对象，把最新的评论,push到这个数组中去
+          //3.JSON.parse('[]')(隐藏bug)
+          //4.把最新的数组JSON.stringify转换成数组字符串调用localStorage.setItem()
+
+          var comment = { id: Date.now(), user: this.user, content: this.content }
+          var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+          //头部增
+          //push尾部增
+          list.unshift(comment)
+          localStorage.setItem('cmts', JSON.stringify(list))
+
+          this.user = this.content = ''
+          this.$emit('func')
+
+        }
+      }
+    }
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        list: [
+          { id: Date.now(), user: '李白', content: '天生我才必有用' },
+          { id: Date.now(), user: '江小白', content: '劝君更进一杯酒' },
+          { id: Date.now(), user: '小马', content: '我姓马，小牛马' },
+        ]
+      },
+      //data methods 没初始化
+      //beforeCreated(){},
+      created() {
+        this.loadComments()
+      },
+      methods: {
+        //从本地加载
+        loadComments() {
+          var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+          this.list = list
+        }
+      },
+      components: {
+
+        'cb': commentBox
+      }
+    });
+  </script>
+</body>
+
+</html>
