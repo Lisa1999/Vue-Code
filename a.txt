@@ -1,0 +1,18 @@
+imgPath = '/Users/guoyuhang/Desktop/CrackData/annotation/'; %图像库路径
+% imgPath = '/Users/guoyuhang/Downloads/CRACK500/traincrop/'; %图像库路径
+imgDir = dir([imgPath '*.png']); %遍历所有png格式文件
+% matPath = '/Users/guoyuhang/Downloads/CRACK500/tr_groundTruth/';
+matPath = '/Users/guoyuhang/Desktop/CrackData/groundTruth/';
+
+for i = 1:length(imgDir)  % 遍历结构体一一处理图片
+    img = imread([imgPath imgDir(i).name]); %读取每张图片
+    edge = bwperim(img); %轮廓提取
+    % edge = edge(img,'sobel');%轮廓提取
+    se = strel('disk',2);
+    fo = imclose(img,se);
+    symmetry = bwmorph(fo,'thin',100);
+    symmetry = logical(symmetry)
+    fileName = strrep(imgDir(i).name,'.png','')
+    path = [fileName '.mat'];
+   save([matPath path],'symmetry','edge')
+end
